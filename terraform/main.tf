@@ -12,11 +12,6 @@ provider "google" {
   region  = var.region
 }
 
-variable "hasura_admin_secret" {
-  description = "Admin secret for Hasura"
-  type        = string
-}
-
 variable "enable_apis" {
   description = "List of APIs to enable"
   type        = list(string)
