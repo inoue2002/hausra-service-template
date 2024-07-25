@@ -3,16 +3,19 @@
 # terraform.tfvarsからproject_idを取得
 project_id=$(grep 'project_id' terraform.tfvars | awk -F ' = ' '{print $2}' | tr -d '"')
 
+# gcloudでproject_idをセット
+gcloud config set project ${project_id}
+
 # 乱数を生成
 random_tag=$(openssl rand -hex 12)
 
 cd ..
 
 # NestJSのビルドとプッシュ
-# cd nestjs
-# docker build --platform linux/amd64 -t asia-northeast1-docker.pkg.dev/${project_id}/my-docker-repo/nestjs:${random_tag} .
-# docker push asia-northeast1-docker.pkg.dev/${project_id}/my-docker-repo/nestjs:${random_tag}
-# cd ..
+cd nestjs
+docker build --platform linux/amd64 -t asia-northeast1-docker.pkg.dev/${project_id}/my-docker-repo/nestjs:${random_tag} .
+docker push asia-northeast1-docker.pkg.dev/${project_id}/my-docker-repo/nestjs:${random_tag}
+cd ..
 
 # Hasuraのビルドとプッシュ
 cd hasura
