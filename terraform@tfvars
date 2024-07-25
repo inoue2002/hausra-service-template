@@ -1,0 +1,13 @@
+project_id         = "your-gcp-project-id"
+region             = "us-central1"
+nestjs_image       = "gcr.io/your-project/nestjs-image:latest"
+hasura_image       = "hasura/graphql-engine:latest"
+hasura_db_url      = "postgres://username:password@host:port/database"
+firebase_app_name  = "Your App Name"
+enable_apis = [
+  "run.googleapis.com",
+  "firebase.googleapis.com",
+  "firebasehosting.googleapis.com",
+  "artifactregistry.googleapis.com",
+  "secretmanager.googleapis.com"
+]
