@@ -1,13 +1,14 @@
-project_id         = "your-gcp-project-id"
-region             = "us-central1"
-nestjs_image       = "gcr.io/your-project/nestjs-image:latest"
-hasura_image       = "hasura/graphql-engine:latest"
-hasura_db_url      = "postgres://username:password@host:port/database"
-firebase_app_name  = "Your App Name"
+project_id = ""
+region     = "asia-northeast1"
+nestjs_image = "asia-northeast1-docker.pkg.dev/${project_id}/my-docker-repo/nestjs:85b3f42b28091637fd3cd859"
+hasura_image = "asia-northeast1-docker.pkg.dev/${project_id}/my-docker-repo/hasura:715a9a1248595a9026601d59"
+
 enable_apis = [
   "run.googleapis.com",
-  "firebase.googleapis.com",
-  "firebasehosting.googleapis.com",
   "artifactregistry.googleapis.com",
   "secretmanager.googleapis.com"
 ]
+
+admin_secret="********"
+
+database_url= "postgresql://postgres:********@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres"
