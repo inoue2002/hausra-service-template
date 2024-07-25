@@ -9,6 +9,8 @@ random_tag=$(openssl rand -hex 12)
 cd nestjs
 
 # イメージをビルドしてプッシュ
+# Apple silicon Macの場合は--platform linux/amd64を指定
+# https://zenn.dev/msksgm/scraps/d667e2b2eecf4e
 docker build --platform linux/amd64 -t asia-northeast1-docker.pkg.dev/${project_id}/my-docker-repo/nestjs:${random_tag} .
 docker push asia-northeast1-docker.pkg.dev/${project_id}/my-docker-repo/nestjs:${random_tag}
 
