@@ -27,21 +27,29 @@ random_tag=$(openssl rand -hex 12)
 reponame="my-docker-repo"
 
 # デプロイするサービスを選択
-echo "デプロイするサービスを選択してください:"
-options=("nestjs" "hasura" "両方" "キャンセル")
+echo "ビルドするサービスを選択してください:"
+options=("nestjs" "hasura" "両方" "ビルドせずにデプロイ" "キャンセル")
 select opt in "${options[@]}"
 do
   case $opt in
     "nestjs")
       services=("nestjs")
+      build=true
       break
       ;;
     "hasura")
       services=("hasura")
+      build=true
       break
       ;;
     "両方")
       services=("nestjs" "hasura")
+      build=true
+      break
+      ;;
+    "ビルドせずにデプロイ")
+      services=("nestjs" "hasura")
+      build=false
       break
       ;;
     "キャンセル")
@@ -62,19 +70,23 @@ if ! gcloud artifacts repositories describe ${reponame} --location=asia-northeas
 fi
 
 # 選択されたサービスをビルドとプッシュ
-for service in "${services[@]}"; do
-  cd $service
-  docker build --platform linux/amd64 -t asia-northeast1-docker.pkg.dev/${project_id}/${reponame}/${service}:${random_tag} .
-  docker push asia-northeast1-docker.pkg.dev/${project_id}/${reponame}/${service}:${random_tag}
-  cd ..
-done
+if [ "$build" = true ]; then
+  for service in "${services[@]}"; do
+    cd $service
+    docker build --platform linux/amd64 -t asia-northeast1-docker.pkg.dev/${project_id}/${reponame}/${service}:${random_tag} .
+    docker push asia-northeast1-docker.pkg.dev/${project_id}/${reponame}/${service}:${random_tag}
+    cd ..
+  done
+fi
 
 cd terraform
 
 # .tfvarsファイルを更新
-for service in "${services[@]}"; do
-  sed -i.bak "s|^${service}_image = \".*\"|${service}_image = \"asia-northeast1-docker.pkg.dev/${project_id}/${reponame}/${service}:${random_tag}\"|" terraform.tfvars
-done
+if [ "$build" = true ]; then
+  for service in "${services[@]}"; do
+    sed -i.bak "s|^${service}_image = \".*\"|${service}_image = \"asia-northeast1-docker.pkg.dev/${project_id}/${reponame}/${service}:${random_tag}\"|" terraform.tfvars
+  done
+fi
 
 # Terraformを実行
 terraform init -reconfigure
