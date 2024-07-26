@@ -47,6 +47,7 @@
 - ビジネスロジックをHasuraからNestJSへ流して処理
 - Firebase AuthをTerraformで自動構築し、フロントエンドのためのログイン機構を提供
 - Firebase AuthのJWTを使用してHasuraのロール管理を行う
+- NestjsでLIFFの認証を行う
 
 ## 削除する時
 
