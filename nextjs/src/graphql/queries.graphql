@@ -1,0 +1,10 @@
+# 使いたいクエリを定義する
+mutation InsertTableTest($id: uuid, $name: String) {
+  insert_table_test(objects: { id: $id, name: $name }) {
+    affected_rows
+    returning {
+      id
+      name
+    }
+  }
+}

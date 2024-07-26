@@ -97,3 +97,24 @@ for service in "${services[@]}"; do
   service_url=$(gcloud run services describe ${service}-service --platform managed --region asia-northeast1 --format "value(status.url)")
   echo "${service}のデプロイURL: ${service_url}"
 done
+
+# Hasuraのエンドポイントを取得して.env.localに書き込み
+if [[ " ${services[@]} " =~ " hasura " ]]; then
+  # /nextjs/.env.localを作成または更新
+  hasuraurl=$(gcloud run services describe hasura-service --platform managed --region asia-northeast1 --format "value(status.url)")
+  env_file="../nextjs/.env.local"
+
+  if [ -f "$env_file" ]; then
+    # ファイルが存在する場合、該当の箇所のみを修正または追加
+    if grep -q "^HASURA_ENDPOINT=" "$env_file"; then
+      sed -i.bak "s|^HASURA_ENDPOINT=.*|HASURA_ENDPOINT=${hasuraurl}/v1/graphql|" $env_file
+    else
+      echo "HASURA_ENDPOINT=${hasuraurl}/v1/graphql" >> $env_file
+    fi
+  else
+    # ファイルが存在しない場合、新規作成
+    cat <<EOT > $env_file
+HASURA_ENDPOINT=${hasuraurl}/v1/graphql
+EOT
+  fi
+fi

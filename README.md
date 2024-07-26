@@ -36,12 +36,13 @@
 
 - TerraformからGoogle Cloudへ、HasuraとNestJSのAPIのデプロイ
 - デプロイしたHasura Consoleへのログイン
+- Next.jsを作成し、Firebase Hostingでデプロイ、Firebase Authの有効化
+- GraphQL Code Generatorを使用してクライアント用のコードを生成
 
 ## これからやりたいこと
 
 - HasuraとNestJSの接続（Remote Schemaを使用）
 - HasuraからSupabaseへの接続（テーブル作成など）
-- GraphQL Code Generatorを使用してクライアント用のコードを生成
 - フロントエンドからHasuraへリクエストを行い、バックエンドの処理を実行
 - ビジネスロジックをHasuraからNestJSへ流して処理
 - Firebase AuthをTerraformで自動構築し、フロントエンドのためのログイン機構を提供
