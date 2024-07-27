@@ -5,6 +5,8 @@ import { join } from 'path';
 import { UserModule } from './user/user.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { HttpModule } from '@nestjs/axios';
+import { HasuraService } from './hasura/hasura.service';
 
 @Module({
   imports: [
@@ -13,8 +15,9 @@ import { AppService } from './app.service';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     UserModule,
+    HttpModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController], // 新しいコントローラーを登録
+  providers: [AppService, HasuraService],
 })
 export class AppModule {}

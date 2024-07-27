@@ -15,21 +15,23 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  timestamptz: { input: any; output: any; }
+  date: { input: any; output: any; }
+  numeric: { input: any; output: any; }
   uuid: { input: any; output: any; }
 };
 
-/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
-export type Boolean_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['Boolean']['input']>;
-  _gt?: InputMaybe<Scalars['Boolean']['input']>;
-  _gte?: InputMaybe<Scalars['Boolean']['input']>;
-  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _lt?: InputMaybe<Scalars['Boolean']['input']>;
-  _lte?: InputMaybe<Scalars['Boolean']['input']>;
-  _neq?: InputMaybe<Scalars['Boolean']['input']>;
-  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+export type SampleInput = {
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
+export type SampleOutput = {
+  accessToken: Scalars['String']['output'];
+  test?: Maybe<Table_Test>;
+};
+
+export type SignupDerivedOutput = {
+  id: Scalars['numeric']['output'];
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
@@ -65,6 +67,12 @@ export type String_Comparison_Exp = {
   _similar?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type User = {
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+};
+
 /** ordering argument of a cursor */
 export enum Cursor_Ordering {
   /** ascending ordering of the cursor */
@@ -73,36 +81,66 @@ export enum Cursor_Ordering {
   Desc = 'DESC'
 }
 
+/** Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'. */
+export type Date_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['date']['input']>;
+  _gt?: InputMaybe<Scalars['date']['input']>;
+  _gte?: InputMaybe<Scalars['date']['input']>;
+  _in?: InputMaybe<Array<Scalars['date']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['date']['input']>;
+  _lte?: InputMaybe<Scalars['date']['input']>;
+  _neq?: InputMaybe<Scalars['date']['input']>;
+  _nin?: InputMaybe<Array<Scalars['date']['input']>>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
+  SignupDerived?: Maybe<SignupDerivedOutput>;
+  /** aa */
+  actionName?: Maybe<SampleOutput>;
   /** delete data from the table: "table_test" */
   delete_table_test?: Maybe<Table_Test_Mutation_Response>;
   /** delete single row from the table: "table_test" */
   delete_table_test_by_pk?: Maybe<Table_Test>;
-  /** delete data from the table: "tasks" */
-  delete_tasks?: Maybe<Tasks_Mutation_Response>;
-  /** delete single row from the table: "tasks" */
-  delete_tasks_by_pk?: Maybe<Tasks>;
+  /** delete data from the table: "users" */
+  delete_users?: Maybe<Users_Mutation_Response>;
+  /** delete single row from the table: "users" */
+  delete_users_by_pk?: Maybe<Users>;
   /** insert data into the table: "table_test" */
   insert_table_test?: Maybe<Table_Test_Mutation_Response>;
   /** insert a single row into the table: "table_test" */
   insert_table_test_one?: Maybe<Table_Test>;
-  /** insert data into the table: "tasks" */
-  insert_tasks?: Maybe<Tasks_Mutation_Response>;
-  /** insert a single row into the table: "tasks" */
-  insert_tasks_one?: Maybe<Tasks>;
+  /** insert data into the table: "users" */
+  insert_users?: Maybe<Users_Mutation_Response>;
+  /** insert a single row into the table: "users" */
+  insert_users_one?: Maybe<Users>;
+  /** signup */
+  signup?: Maybe<SignupOutput>;
   /** update data of the table: "table_test" */
   update_table_test?: Maybe<Table_Test_Mutation_Response>;
   /** update single row of the table: "table_test" */
   update_table_test_by_pk?: Maybe<Table_Test>;
   /** update multiples rows of table: "table_test" */
   update_table_test_many?: Maybe<Array<Maybe<Table_Test_Mutation_Response>>>;
-  /** update data of the table: "tasks" */
-  update_tasks?: Maybe<Tasks_Mutation_Response>;
-  /** update single row of the table: "tasks" */
-  update_tasks_by_pk?: Maybe<Tasks>;
-  /** update multiples rows of table: "tasks" */
-  update_tasks_many?: Maybe<Array<Maybe<Tasks_Mutation_Response>>>;
+  /** update data of the table: "users" */
+  update_users?: Maybe<Users_Mutation_Response>;
+  /** update single row of the table: "users" */
+  update_users_by_pk?: Maybe<Users>;
+  /** update multiples rows of table: "users" */
+  update_users_many?: Maybe<Array<Maybe<Users_Mutation_Response>>>;
+};
+
+
+/** mutation root */
+export type Mutation_RootSignupDerivedArgs = {
+  id: Scalars['numeric']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootActionNameArgs = {
+  arg1: SampleInput;
 };
 
 
@@ -119,14 +157,14 @@ export type Mutation_RootDelete_Table_Test_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_TasksArgs = {
-  where: Tasks_Bool_Exp;
+export type Mutation_RootDelete_UsersArgs = {
+  where: Users_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_Tasks_By_PkArgs = {
-  id: Scalars['uuid']['input'];
+export type Mutation_RootDelete_Users_By_PkArgs = {
+  id: Scalars['numeric']['input'];
 };
 
 
@@ -145,16 +183,24 @@ export type Mutation_RootInsert_Table_Test_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_TasksArgs = {
-  objects: Array<Tasks_Insert_Input>;
-  on_conflict?: InputMaybe<Tasks_On_Conflict>;
+export type Mutation_RootInsert_UsersArgs = {
+  objects: Array<Users_Insert_Input>;
+  on_conflict?: InputMaybe<Users_On_Conflict>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_Tasks_OneArgs = {
-  object: Tasks_Insert_Input;
-  on_conflict?: InputMaybe<Tasks_On_Conflict>;
+export type Mutation_RootInsert_Users_OneArgs = {
+  object: Users_Insert_Input;
+  on_conflict?: InputMaybe<Users_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootSignupArgs = {
+  id: Scalars['numeric']['input'];
+  name: Scalars['String']['input'];
+  username: Scalars['String']['input'];
 };
 
 
@@ -179,22 +225,37 @@ export type Mutation_RootUpdate_Table_Test_ManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_TasksArgs = {
-  _set?: InputMaybe<Tasks_Set_Input>;
-  where: Tasks_Bool_Exp;
+export type Mutation_RootUpdate_UsersArgs = {
+  _inc?: InputMaybe<Users_Inc_Input>;
+  _set?: InputMaybe<Users_Set_Input>;
+  where: Users_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_Tasks_By_PkArgs = {
-  _set?: InputMaybe<Tasks_Set_Input>;
-  pk_columns: Tasks_Pk_Columns_Input;
+export type Mutation_RootUpdate_Users_By_PkArgs = {
+  _inc?: InputMaybe<Users_Inc_Input>;
+  _set?: InputMaybe<Users_Set_Input>;
+  pk_columns: Users_Pk_Columns_Input;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_Tasks_ManyArgs = {
-  updates: Array<Tasks_Updates>;
+export type Mutation_RootUpdate_Users_ManyArgs = {
+  updates: Array<Users_Updates>;
+};
+
+/** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
+export type Numeric_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['numeric']['input']>;
+  _gt?: InputMaybe<Scalars['numeric']['input']>;
+  _gte?: InputMaybe<Scalars['numeric']['input']>;
+  _in?: InputMaybe<Array<Scalars['numeric']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['numeric']['input']>;
+  _lte?: InputMaybe<Scalars['numeric']['input']>;
+  _neq?: InputMaybe<Scalars['numeric']['input']>;
+  _nin?: InputMaybe<Array<Scalars['numeric']['input']>>;
 };
 
 /** column ordering options */
@@ -214,18 +275,26 @@ export enum Order_By {
 }
 
 export type Query_Root = {
+  getUser: User;
   /** fetch data from the table: "table_test" */
   table_test: Array<Table_Test>;
   /** fetch aggregated fields from the table: "table_test" */
   table_test_aggregate: Table_Test_Aggregate;
   /** fetch data from the table: "table_test" using primary key columns */
   table_test_by_pk?: Maybe<Table_Test>;
-  /** fetch data from the table: "tasks" */
-  tasks: Array<Tasks>;
-  /** fetch aggregated fields from the table: "tasks" */
-  tasks_aggregate: Tasks_Aggregate;
-  /** fetch data from the table: "tasks" using primary key columns */
-  tasks_by_pk?: Maybe<Tasks>;
+  /** aaa */
+  testAction?: Maybe<SampleOutput>;
+  /** fetch data from the table: "users" */
+  users: Array<Users>;
+  /** fetch aggregated fields from the table: "users" */
+  users_aggregate: Users_Aggregate;
+  /** fetch data from the table: "users" using primary key columns */
+  users_by_pk?: Maybe<Users>;
+};
+
+
+export type Query_RootGetUserArgs = {
+  id: Scalars['String']['input'];
 };
 
 
@@ -252,26 +321,35 @@ export type Query_RootTable_Test_By_PkArgs = {
 };
 
 
-export type Query_RootTasksArgs = {
-  distinct_on?: InputMaybe<Array<Tasks_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Tasks_Order_By>>;
-  where?: InputMaybe<Tasks_Bool_Exp>;
+export type Query_RootTestActionArgs = {
+  arg1: SampleInput;
 };
 
 
-export type Query_RootTasks_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Tasks_Select_Column>>;
+export type Query_RootUsersArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Tasks_Order_By>>;
-  where?: InputMaybe<Tasks_Bool_Exp>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
 };
 
 
-export type Query_RootTasks_By_PkArgs = {
-  id: Scalars['uuid']['input'];
+export type Query_RootUsers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
+};
+
+
+export type Query_RootUsers_By_PkArgs = {
+  id: Scalars['numeric']['input'];
+};
+
+export type SignupOutput = {
+  id: Scalars['numeric']['output'];
 };
 
 export type Subscription_Root = {
@@ -283,14 +361,14 @@ export type Subscription_Root = {
   table_test_by_pk?: Maybe<Table_Test>;
   /** fetch data from the table in a streaming manner: "table_test" */
   table_test_stream: Array<Table_Test>;
-  /** fetch data from the table: "tasks" */
-  tasks: Array<Tasks>;
-  /** fetch aggregated fields from the table: "tasks" */
-  tasks_aggregate: Tasks_Aggregate;
-  /** fetch data from the table: "tasks" using primary key columns */
-  tasks_by_pk?: Maybe<Tasks>;
-  /** fetch data from the table in a streaming manner: "tasks" */
-  tasks_stream: Array<Tasks>;
+  /** fetch data from the table: "users" */
+  users: Array<Users>;
+  /** fetch aggregated fields from the table: "users" */
+  users_aggregate: Users_Aggregate;
+  /** fetch data from the table: "users" using primary key columns */
+  users_by_pk?: Maybe<Users>;
+  /** fetch data from the table in a streaming manner: "users" */
+  users_stream: Array<Users>;
 };
 
 
@@ -324,37 +402,38 @@ export type Subscription_RootTable_Test_StreamArgs = {
 };
 
 
-export type Subscription_RootTasksArgs = {
-  distinct_on?: InputMaybe<Array<Tasks_Select_Column>>;
+export type Subscription_RootUsersArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Tasks_Order_By>>;
-  where?: InputMaybe<Tasks_Bool_Exp>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
 };
 
 
-export type Subscription_RootTasks_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Tasks_Select_Column>>;
+export type Subscription_RootUsers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Tasks_Order_By>>;
-  where?: InputMaybe<Tasks_Bool_Exp>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
 };
 
 
-export type Subscription_RootTasks_By_PkArgs = {
-  id: Scalars['uuid']['input'];
+export type Subscription_RootUsers_By_PkArgs = {
+  id: Scalars['numeric']['input'];
 };
 
 
-export type Subscription_RootTasks_StreamArgs = {
+export type Subscription_RootUsers_StreamArgs = {
   batch_size: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<Tasks_Stream_Cursor_Input>>;
-  where?: InputMaybe<Tasks_Bool_Exp>;
+  cursor: Array<InputMaybe<Users_Stream_Cursor_Input>>;
+  where?: InputMaybe<Users_Bool_Exp>;
 };
 
 /** test_tabel */
 export type Table_Test = {
+  aa: User;
   id: Scalars['uuid']['output'];
   name: Scalars['String']['output'];
 };
@@ -481,179 +560,223 @@ export type Table_Test_Updates = {
   where: Table_Test_Bool_Exp;
 };
 
-/** columns and relationships of "tasks" */
-export type Tasks = {
-  created_at: Scalars['timestamptz']['output'];
-  id: Scalars['uuid']['output'];
-  is_completed: Scalars['Boolean']['output'];
-  title: Scalars['String']['output'];
-  user_id: Scalars['uuid']['output'];
+/** columns and relationships of "users" */
+export type Users = {
+  created_at: Scalars['date']['output'];
+  id: Scalars['numeric']['output'];
+  name: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  username: Scalars['String']['output'];
 };
 
-/** aggregated selection of "tasks" */
-export type Tasks_Aggregate = {
-  aggregate?: Maybe<Tasks_Aggregate_Fields>;
-  nodes: Array<Tasks>;
+/** aggregated selection of "users" */
+export type Users_Aggregate = {
+  aggregate?: Maybe<Users_Aggregate_Fields>;
+  nodes: Array<Users>;
 };
 
-/** aggregate fields of "tasks" */
-export type Tasks_Aggregate_Fields = {
+/** aggregate fields of "users" */
+export type Users_Aggregate_Fields = {
+  avg?: Maybe<Users_Avg_Fields>;
   count: Scalars['Int']['output'];
-  max?: Maybe<Tasks_Max_Fields>;
-  min?: Maybe<Tasks_Min_Fields>;
+  max?: Maybe<Users_Max_Fields>;
+  min?: Maybe<Users_Min_Fields>;
+  stddev?: Maybe<Users_Stddev_Fields>;
+  stddev_pop?: Maybe<Users_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Users_Stddev_Samp_Fields>;
+  sum?: Maybe<Users_Sum_Fields>;
+  var_pop?: Maybe<Users_Var_Pop_Fields>;
+  var_samp?: Maybe<Users_Var_Samp_Fields>;
+  variance?: Maybe<Users_Variance_Fields>;
 };
 
 
-/** aggregate fields of "tasks" */
-export type Tasks_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Tasks_Select_Column>>;
+/** aggregate fields of "users" */
+export type Users_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Users_Select_Column>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-/** Boolean expression to filter rows from the table "tasks". All fields are combined with a logical 'AND'. */
-export type Tasks_Bool_Exp = {
-  _and?: InputMaybe<Array<Tasks_Bool_Exp>>;
-  _not?: InputMaybe<Tasks_Bool_Exp>;
-  _or?: InputMaybe<Array<Tasks_Bool_Exp>>;
-  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  is_completed?: InputMaybe<Boolean_Comparison_Exp>;
-  title?: InputMaybe<String_Comparison_Exp>;
-  user_id?: InputMaybe<Uuid_Comparison_Exp>;
+/** aggregate avg on columns */
+export type Users_Avg_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
-/** unique or primary key constraints on table "tasks" */
-export enum Tasks_Constraint {
+/** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
+export type Users_Bool_Exp = {
+  _and?: InputMaybe<Array<Users_Bool_Exp>>;
+  _not?: InputMaybe<Users_Bool_Exp>;
+  _or?: InputMaybe<Array<Users_Bool_Exp>>;
+  created_at?: InputMaybe<Date_Comparison_Exp>;
+  id?: InputMaybe<Numeric_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  password?: InputMaybe<String_Comparison_Exp>;
+  username?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "users" */
+export enum Users_Constraint {
   /** unique or primary key constraint on columns "id" */
-  TasksPkey = 'tasks_pkey'
+  UsersPkey = 'users_pkey'
 }
 
-/** input type for inserting data into table "tasks" */
-export type Tasks_Insert_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['uuid']['input']>;
-  is_completed?: InputMaybe<Scalars['Boolean']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  user_id?: InputMaybe<Scalars['uuid']['input']>;
+/** input type for incrementing numeric columns in table "users" */
+export type Users_Inc_Input = {
+  id?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** input type for inserting data into table "users" */
+export type Users_Insert_Input = {
+  created_at?: InputMaybe<Scalars['date']['input']>;
+  id?: InputMaybe<Scalars['numeric']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
-export type Tasks_Max_Fields = {
-  created_at?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['uuid']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
-  user_id?: Maybe<Scalars['uuid']['output']>;
+export type Users_Max_Fields = {
+  created_at?: Maybe<Scalars['date']['output']>;
+  id?: Maybe<Scalars['numeric']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  password?: Maybe<Scalars['String']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
-export type Tasks_Min_Fields = {
-  created_at?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['uuid']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
-  user_id?: Maybe<Scalars['uuid']['output']>;
+export type Users_Min_Fields = {
+  created_at?: Maybe<Scalars['date']['output']>;
+  id?: Maybe<Scalars['numeric']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  password?: Maybe<Scalars['String']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
 };
 
-/** response of any mutation on the table "tasks" */
-export type Tasks_Mutation_Response = {
+/** response of any mutation on the table "users" */
+export type Users_Mutation_Response = {
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
-  returning: Array<Tasks>;
+  returning: Array<Users>;
 };
 
-/** on_conflict condition type for table "tasks" */
-export type Tasks_On_Conflict = {
-  constraint: Tasks_Constraint;
-  update_columns?: Array<Tasks_Update_Column>;
-  where?: InputMaybe<Tasks_Bool_Exp>;
+/** on_conflict condition type for table "users" */
+export type Users_On_Conflict = {
+  constraint: Users_Constraint;
+  update_columns?: Array<Users_Update_Column>;
+  where?: InputMaybe<Users_Bool_Exp>;
 };
 
-/** Ordering options when selecting data from "tasks". */
-export type Tasks_Order_By = {
+/** Ordering options when selecting data from "users". */
+export type Users_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  is_completed?: InputMaybe<Order_By>;
-  title?: InputMaybe<Order_By>;
-  user_id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
+  username?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: tasks */
-export type Tasks_Pk_Columns_Input = {
-  id: Scalars['uuid']['input'];
+/** primary key columns input for table: users */
+export type Users_Pk_Columns_Input = {
+  id: Scalars['numeric']['input'];
 };
 
-/** select columns of table "tasks" */
-export enum Tasks_Select_Column {
+/** select columns of table "users" */
+export enum Users_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
   /** column name */
-  IsCompleted = 'is_completed',
+  Name = 'name',
   /** column name */
-  Title = 'title',
+  Password = 'password',
   /** column name */
-  UserId = 'user_id'
+  Username = 'username'
 }
 
-/** input type for updating data in table "tasks" */
-export type Tasks_Set_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['uuid']['input']>;
-  is_completed?: InputMaybe<Scalars['Boolean']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  user_id?: InputMaybe<Scalars['uuid']['input']>;
+/** input type for updating data in table "users" */
+export type Users_Set_Input = {
+  created_at?: InputMaybe<Scalars['date']['input']>;
+  id?: InputMaybe<Scalars['numeric']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** Streaming cursor of the table "tasks" */
-export type Tasks_Stream_Cursor_Input = {
+/** aggregate stddev on columns */
+export type Users_Stddev_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Users_Stddev_Pop_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Users_Stddev_Samp_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "users" */
+export type Users_Stream_Cursor_Input = {
   /** Stream column input with initial value */
-  initial_value: Tasks_Stream_Cursor_Value_Input;
+  initial_value: Users_Stream_Cursor_Value_Input;
   /** cursor ordering */
   ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type Tasks_Stream_Cursor_Value_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['uuid']['input']>;
-  is_completed?: InputMaybe<Scalars['Boolean']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  user_id?: InputMaybe<Scalars['uuid']['input']>;
+export type Users_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['date']['input']>;
+  id?: InputMaybe<Scalars['numeric']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** update columns of table "tasks" */
-export enum Tasks_Update_Column {
+/** aggregate sum on columns */
+export type Users_Sum_Fields = {
+  id?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** update columns of table "users" */
+export enum Users_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
   /** column name */
-  IsCompleted = 'is_completed',
+  Name = 'name',
   /** column name */
-  Title = 'title',
+  Password = 'password',
   /** column name */
-  UserId = 'user_id'
+  Username = 'username'
 }
 
-export type Tasks_Updates = {
+export type Users_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Users_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Tasks_Set_Input>;
+  _set?: InputMaybe<Users_Set_Input>;
   /** filter the rows which have to be updated */
-  where: Tasks_Bool_Exp;
+  where: Users_Bool_Exp;
 };
 
-/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
-export type Timestamptz_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['timestamptz']['input']>;
-  _gt?: InputMaybe<Scalars['timestamptz']['input']>;
-  _gte?: InputMaybe<Scalars['timestamptz']['input']>;
-  _in?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _lt?: InputMaybe<Scalars['timestamptz']['input']>;
-  _lte?: InputMaybe<Scalars['timestamptz']['input']>;
-  _neq?: InputMaybe<Scalars['timestamptz']['input']>;
-  _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
+/** aggregate var_pop on columns */
+export type Users_Var_Pop_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Users_Var_Samp_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Users_Variance_Fields = {
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
