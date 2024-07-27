@@ -38,13 +38,13 @@
 - デプロイしたHasura Consoleへのログイン
 - Next.jsを作成し、Firebase Hostingでデプロイ、Firebase Authの有効化
 - GraphQL Code Generatorを使用してクライアント用のコードを生成
+- HasuraとNestJSの接続（Hasura Actionを使用）
+- HasuraからSupabaseへの接続（テーブル作成などはHasura管理画面から）
+- フロントエンドからHasuraへリクエストを行い、バックエンドの処理を実行（ローカルで行う場合はngrokなどを使ってトンネリング）
+- ビジネスロジックをHasuraからNestJSへ流して処理
 
 ## これからやりたいこと
 
-- HasuraとNestJSの接続（Remote Schemaを使用）
-- HasuraからSupabaseへの接続（テーブル作成など）
-- フロントエンドからHasuraへリクエストを行い、バックエンドの処理を実行
-- ビジネスロジックをHasuraからNestJSへ流して処理
 - Firebase AuthをTerraformで自動構築し、フロントエンドのためのログイン機構を提供
 - Firebase AuthのJWTを使用してHasuraのロール管理を行う
 - NestjsでLIFFの認証を行う

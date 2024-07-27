@@ -28,3 +28,13 @@ variable "admin_secret" {
   type        = string
   description = "Hasura管理者シークレット"
 }
+
+variable "jwt_secret" {
+  type        = string
+  description = "JWTシークレット"
+}
+
+variable "liff_id" {
+  type        = string
+  description = "LIFF ID"
+}

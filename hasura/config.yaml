@@ -1,7 +1,6 @@
 version: 3
 # endpoint: ${HASURA_GRAPHQL_ENDPOINT}
-endpoint: https://hasura-service-utxnnash3a-an.a.run.app
-admin_secret: hasura
+# endpoint: https://hasura-service-utxnnash3a-an.a.run.app
 metadata_directory: metadata
 actions:
   kind: synchronous

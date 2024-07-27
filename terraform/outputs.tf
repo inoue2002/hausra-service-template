@@ -33,20 +33,21 @@ output "firebase_web_app_storage_bucket" {
   value = data.google_firebase_web_app_config.default.storage_bucket
 }
 
-resource "local_file" "env_local" {
-  content = <<EOT
-HASURA_ADMIN_SECRET=${var.admin_secret}
-EOT
-  filename = "${path.module}/../nextjs/.env.local"
+
+locals {
+  env_vars = {
+    HASURA_ADMIN_SECRET = var.admin_secret
+    LIFF_ID             = var.liff_id
+  }
+
+  existing_content = fileexists("${path.module}/../nextjs/.env.local") ? file("${path.module}/../nextjs/.env.local") : ""
+  filtered_content = [for line in split("\n", local.existing_content) : line if !contains(keys(local.env_vars), split("=", line)[0])]
+  updated_content  = join("\n", concat(local.filtered_content, [for key, value in local.env_vars : "${key}=${value}"]))
 }
 
-resource "null_resource" "update_env_local" {
-  triggers = {
-    admin_secret = var.admin_secret
-  }
-
-  depends_on = [local_file.env_local]
-  provisioner "local-exec" {
-    command = "mv ${path.module}/../nextjs/.env.local ${path.module}/../nextjs/.env.local.tmp && mv ${path.module}/../nextjs/.env.local.tmp ${path.module}/../nextjs/.env.local"
-  }
+resource "local_file" "env_local" {
+  content = <<EOT
+${local.updated_content}
+EOT
+  filename = "${path.module}/../nextjs/.env.local"
 }
