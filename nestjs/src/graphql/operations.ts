@@ -1,3 +1,5 @@
+// 主にActionのreturnで利用するクエリ
+
 export const INSERT_USER_MUTATION = `
   mutation ($id: numeric!, $name: String!, $username: String!) {
     insert_users_one(object: {

@@ -100,21 +100,22 @@ done
 
 # Hasuraのエンドポイントを取得して.env.localに書き込み
 if [[ " ${services[@]} " =~ " hasura " ]]; then
-  # /nextjs/.env.localを作成または更新
+  # /nextjs/.env.localと/nestjs/.env.localを作成または更新
   hasuraurl=$(gcloud run services describe hasura-service --platform managed --region asia-northeast1 --format "value(status.url)")
-  env_file="../nextjs/.env.local"
+  nextjs_env_file="../nextjs/.env.local"
+  nestjs_env_file="../nestjs/.env.local"
 
-  if [ -f "$env_file" ]; then
-    # ファイルが存在する場合、該当の箇所のみを修正または追加
-    if grep -q "^HASURA_ENDPOINT=" "$env_file"; then
-      sed -i.bak "s|^HASURA_ENDPOINT=.*|HASURA_ENDPOINT=${hasuraurl}/v1/graphql|" $env_file
+  for env_file in "$nextjs_env_file" "$nestjs_env_file"; do
+    if [ -f "$env_file" ]; then
+      # ファイルが存在する場合、該当の箇所のみを修正または追加
+      if grep -q "^HASURA_ENDPOINT=" "$env_file"; then
+        sed -i.bak "s|^HASURA_ENDPOINT=.*|\nHASURA_ENDPOINT=${hasuraurl}/v1/graphql|" "$env_file"
+      else
+        echo -e "\nHASURA_ENDPOINT=${hasuraurl}/v1/graphql" >> "$env_file"
+      fi
     else
-      echo "HASURA_ENDPOINT=${hasuraurl}/v1/graphql" >> $env_file
+      # ファイルが存在しない場合、新規作成
+      echo -e "\nHASURA_ENDPOINT=${hasuraurl}/v1/graphql" > "$env_file"
     fi
-  else
-    # ファイルが存在しない場合、新規作成
-    cat <<EOT > $env_file
-HASURA_ENDPOINT=${hasuraurl}/v1/graphql
-EOT
-  fi
+  done
 fi

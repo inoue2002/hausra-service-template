@@ -57,6 +57,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         window.alert('ログイン成功');
+        console.log({ user });
+        const idToken = user.getIdToken();
+        console.log({ idToken });
         setIsLoggedIn(true);
       } else {
         window.alert('ログアウト');

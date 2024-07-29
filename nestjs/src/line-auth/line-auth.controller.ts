@@ -18,6 +18,8 @@ export class LineAuthController {
     try {
       const firebaseToken = await this.lineAuthService.verifyLineToken(idToken);
       console.log('DEBUG: Firebase Token2: ', firebaseToken);
+
+      // todo - ここでuserテーブルにinsertを行うクエリを渡して返却する
       return res.json({ firebaseToken });
     } catch (error) {
       console.error('ERROR: ', error);

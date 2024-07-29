@@ -8,8 +8,8 @@ interface GraphQLResponse<T> {
 
 @Injectable()
 export class HasuraService {
-  private readonly HASURA_ENDPOINT =
-    'https://hasura-service-zu7de5alhq-an.a.run.app/v1/graphql';
+  private readonly HASURA_ENDPOINT = process.env.HASURA_ENDPOINT;
+  private readonly HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET;
 
   async execute<T>(query: string, variables: any): Promise<GraphQLResponse<T>> {
     const response = await axios.post<GraphQLResponse<T>>(
@@ -21,7 +21,7 @@ export class HasuraService {
       {
         headers: {
           'Content-Type': 'application/json',
-          'x-hasura-admin-secret': 'hasura!',
+          'x-hasura-admin-secret': this.HASURA_ADMIN_SECRET,
         },
       },
     );
