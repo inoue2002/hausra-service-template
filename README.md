@@ -1,5 +1,8 @@
 # 個人開発アーキテクチャ(仮)
 
+<blockquote class="twitter-tweet" data-media-max-width="560"><p lang="ja" dir="ltr">期末試験の合間に思いつきでアプリを作ってたらこんな構成になった… <a href="https://t.co/Gjsdja1yBS">pic.twitter.com/Gjsdja1yBS</a></p>&mdash; ようかん / Yosuke Inoue (@inoue2002) <a href="https://twitter.com/inoue2002/status/1817953006056571201?ref_src=twsrc%5Etfw">July 29, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
 # 構成図
 
 [![Image from Gyazo](https://i.gyazo.com/8cb1f626fa527ac2556b58a6d4e4ec97.png)](https://gyazo.com/8cb1f626fa527ac2556b58a6d4e4ec97)
