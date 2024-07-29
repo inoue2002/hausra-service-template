@@ -73,6 +73,14 @@ export type User = {
   name: Scalars['String']['output'];
 };
 
+export type VerifyInput = {
+  idToken: Scalars['String']['input'];
+};
+
+export type VerifyOutput = {
+  firebaseToken: Scalars['String']['output'];
+};
+
 /** ordering argument of a cursor */
 export enum Cursor_Ordering {
   /** ascending ordering of the cursor */
@@ -129,6 +137,8 @@ export type Mutation_Root = {
   update_users_by_pk?: Maybe<Users>;
   /** update multiples rows of table: "users" */
   update_users_many?: Maybe<Array<Maybe<Users_Mutation_Response>>>;
+  /** verify */
+  verify?: Maybe<VerifyOutput>;
 };
 
 
@@ -243,6 +253,12 @@ export type Mutation_RootUpdate_Users_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Users_ManyArgs = {
   updates: Array<Users_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootVerifyArgs = {
+  arg1: VerifyInput;
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
@@ -800,6 +816,13 @@ export type InsertTableTestMutationVariables = Exact<{
 
 export type InsertTableTestMutation = { insert_table_test?: { affected_rows: number, returning: Array<{ id: any, name: string }> } | null };
 
+export type VerifyTokenMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type VerifyTokenMutation = { verify?: { firebaseToken: string } | null };
+
 
 export const InsertTableTestDocument = gql`
     mutation InsertTableTest($id: uuid, $name: String) {
@@ -839,3 +862,36 @@ export function useInsertTableTestMutation(baseOptions?: Apollo.MutationHookOpti
 export type InsertTableTestMutationHookResult = ReturnType<typeof useInsertTableTestMutation>;
 export type InsertTableTestMutationResult = Apollo.MutationResult<InsertTableTestMutation>;
 export type InsertTableTestMutationOptions = Apollo.BaseMutationOptions<InsertTableTestMutation, InsertTableTestMutationVariables>;
+export const VerifyTokenDocument = gql`
+    mutation VerifyToken($id: String!) {
+  verify(arg1: {idToken: $id}) {
+    firebaseToken
+  }
+}
+    `;
+export type VerifyTokenMutationFn = Apollo.MutationFunction<VerifyTokenMutation, VerifyTokenMutationVariables>;
+
+/**
+ * __useVerifyTokenMutation__
+ *
+ * To run a mutation, you first call `useVerifyTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVerifyTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [verifyTokenMutation, { data, loading, error }] = useVerifyTokenMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useVerifyTokenMutation(baseOptions?: Apollo.MutationHookOptions<VerifyTokenMutation, VerifyTokenMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<VerifyTokenMutation, VerifyTokenMutationVariables>(VerifyTokenDocument, options);
+      }
+export type VerifyTokenMutationHookResult = ReturnType<typeof useVerifyTokenMutation>;
+export type VerifyTokenMutationResult = Apollo.MutationResult<VerifyTokenMutation>;
+export type VerifyTokenMutationOptions = Apollo.BaseMutationOptions<VerifyTokenMutation, VerifyTokenMutationVariables>;
