@@ -1,7 +1,7 @@
 'use client';
 import { useLiff } from '@/components/LiffProvider';
 import type { Profile } from '@liff/get-profile';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ProfileProps {}
 
@@ -37,11 +37,7 @@ const Profile: React.FC<ProfileProps> = () => {
           <p>displayName: {profile.displayName}</p>
         </>
       )}
-      {profile ? (
-        <button onClick={handleLogout}>logout</button>
-      ) : (
-        <button onClick={handleLogin}>login</button>
-      )}
+      {profile ? <button onClick={handleLogout}>logout</button> : <button onClick={handleLogin}>login</button>}
     </div>
   );
 };

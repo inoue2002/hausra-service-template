@@ -37,9 +37,15 @@ output "firebase_web_app_storage_bucket" {
 locals {
   env_vars = {
     HASURA_ADMIN_SECRET = var.admin_secret
-    LIFF_ID             = var.liff_id
+    NEXT_PUBLIC_LIFF_ID             = var.liff_id
+    NEXT_PUBLIC_FIREBASE_API_KEY    = data.google_firebase_web_app_config.default.api_key
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = data.google_firebase_web_app_config.default.auth_domain
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID  = data.google_firebase_web_app_config.default.project
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = data.google_firebase_web_app_config.default.storage_bucket
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = data.google_firebase_web_app_config.default.messaging_sender_id
+    NEXT_PUBLIC_FIREBASE_APP_ID      = data.google_firebase_web_app_config.default.web_app_id
   }
-
+  
   existing_content = fileexists("${path.module}/../nextjs/.env.local") ? file("${path.module}/../nextjs/.env.local") : ""
   filtered_content = [for line in split("\n", local.existing_content) : line if !contains(keys(local.env_vars), split("=", line)[0])]
   updated_content  = join("\n", concat(local.filtered_content, [for key, value in local.env_vars : "${key}=${value}"]))

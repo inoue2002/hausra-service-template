@@ -21,7 +21,7 @@ export class HasuraService {
       {
         headers: {
           'Content-Type': 'application/json',
-          'x-hasura-admin-secret': 'hasura',
+          'x-hasura-admin-secret': 'hasura!',
         },
       },
     );

@@ -8,3 +8,9 @@ mutation InsertTableTest($id: uuid, $name: String) {
     }
   }
 }
+
+mutation VerifyToken($id: String!) {
+  verify(idToken: $id) {
+    firebaseToken
+  }
+}

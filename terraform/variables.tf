@@ -38,3 +38,19 @@ variable "liff_id" {
   type        = string
   description = "LIFF ID"
 }
+
+variable "line_client_id" {
+  type        = string
+  description = "LINE Client ID"
+}
+
+variable "firebase_admin_service_account_email" {
+  type        = string
+  description = "Firebase Admin Service Accountのメールアドレス"
+}
+
+variable "firebase_admin_service_account_key" {
+  type        = string
+  description = "Firebase Admin Service Accountの秘密鍵"
+}
+

@@ -73,10 +73,6 @@ export type User = {
   name: Scalars['String']['output'];
 };
 
-export type VerifyInput = {
-  idToken: Scalars['String']['input'];
-};
-
 export type VerifyOutput = {
   firebaseToken: Scalars['String']['output'];
 };
@@ -258,7 +254,7 @@ export type Mutation_RootUpdate_Users_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootVerifyArgs = {
-  arg1: VerifyInput;
+  idToken: Scalars['String']['input'];
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
@@ -864,7 +860,7 @@ export type InsertTableTestMutationResult = Apollo.MutationResult<InsertTableTes
 export type InsertTableTestMutationOptions = Apollo.BaseMutationOptions<InsertTableTestMutation, InsertTableTestMutationVariables>;
 export const VerifyTokenDocument = gql`
     mutation VerifyToken($id: String!) {
-  verify(arg1: {idToken: $id}) {
+  verify(idToken: $id) {
     firebaseToken
   }
 }
