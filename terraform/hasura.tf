@@ -46,6 +46,11 @@ resource "google_cloud_run_v2_service" "hasura" {
         name  = "HASURA_GRAPHQL_CORS_DOMAIN"
         value = "*"
       }
+
+      env {
+        name  = "HASURA_GRAPHQL_JWT_SECRET"
+        value = var.jwt_secret
+      }
       
       ports {
         container_port = 8080
